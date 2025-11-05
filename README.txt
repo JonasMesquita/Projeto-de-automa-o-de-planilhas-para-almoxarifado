@@ -1,5 +1,5 @@
 # 🧾 Sistema de Controle de Estoque – MechaMachines
-**Versão 3.0 | Desenvolvido em Python (Tkinter + OpenPyXL + ReportLab)**
+**Versão 0.1 | Desenvolvido em Python (Tkinter + OpenPyXL + ReportLab)**
 
 ---
 

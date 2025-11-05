@@ -468,7 +468,14 @@ def gerar_relatorio_pdf():
 
 root = tk.Tk()
 root.title("Almoxarifado v3.0")
-root.geometry("1100x700")
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+window_width = int(screen_width * 0.8)
+window_height = int(screen_height * 0.8)
+x = (screen_width // 2) - (window_width // 2)
+y = (screen_height // 2) - (window_height // 2)
+root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+root.minsize(900, 600)
 root.resizable(True, True)
 
 top_frame = tk.Frame(root)
@@ -573,18 +580,32 @@ sub_left_top = tk.LabelFrame(tree_frame, text="Entradas (histórico)")
 sub_left_top.pack(fill="both", expand=True, padx=4, pady=4)
 cols_e = ("ID", "Código", "Produto", "Quantidade", "Data", "Fornecedor", "Obs")
 tree_entradas = ttk.Treeview(sub_left_top, columns=cols_e, show="headings", selectmode="extended")
+
 for c in cols_e:
     tree_entradas.heading(c, text=c)
-    tree_entradas.column(c, width=100 if c in ("ID","Quantidade","Data") else 180)
+    tree_entradas.column(c, width=100 if c in ("ID", "Quantidade", "Data") else 180)
+scroll_y_e = ttk.Scrollbar(sub_left_top, orient="vertical", command=tree_entradas.yview)
+scroll_x_e = ttk.Scrollbar(sub_left_top, orient="horizontal", command=tree_entradas.xview)
+tree_entradas.configure(yscrollcommand=scroll_y_e.set, xscrollcommand=scroll_x_e.set)
+
+scroll_y_e.pack(side="right", fill="y")
+scroll_x_e.pack(side="bottom", fill="x")
 tree_entradas.pack(fill="both", expand=True)
 
 sub_left_bot = tk.LabelFrame(tree_frame, text="Saídas (histórico)")
 sub_left_bot.pack(fill="both", expand=True, padx=4, pady=4)
 cols_s = ("ID", "Código", "Produto", "Quantidade", "Data", "Destino", "Obs")
 tree_saidas = ttk.Treeview(sub_left_bot, columns=cols_s, show="headings", selectmode="extended")
+
 for c in cols_s:
     tree_saidas.heading(c, text=c)
-    tree_saidas.column(c, width=100 if c in ("ID","Quantidade","Data") else 180)
+    tree_saidas.column(c, width=100 if c in ("ID", "Quantidade", "Data") else 180)
+scroll_y_s = ttk.Scrollbar(sub_left_bot, orient="vertical", command=tree_saidas.yview)
+scroll_x_s = ttk.Scrollbar(sub_left_bot, orient="horizontal", command=tree_saidas.xview)
+tree_saidas.configure(yscrollcommand=scroll_y_s.set, xscrollcommand=scroll_x_s.set)
+
+scroll_y_s.pack(side="right", fill="y")
+scroll_x_s.pack(side="bottom", fill="x")
 tree_saidas.pack(fill="both", expand=True)
 
 right = tk.Frame(middle)
@@ -605,9 +626,17 @@ frame_resumo = tk.LabelFrame(right, text="Resumo de Produtos")
 frame_resumo.pack(fill="both", expand=True, padx=4, pady=4)
 cols_r = ("Código", "Produto", "Entradas", "Saídas", "Saldo")
 tree_resumo = ttk.Treeview(frame_resumo, columns=cols_r, show="headings")
+
 for c in cols_r:
     tree_resumo.heading(c, text=c)
-    tree_resumo.column(c, width=120 if c!="Produto" else 240)
+    tree_resumo.column(c, width=120 if c != "Produto" else 240)
+
+scroll_y_r = ttk.Scrollbar(frame_resumo, orient="vertical", command=tree_resumo.yview)
+scroll_x_r = ttk.Scrollbar(frame_resumo, orient="horizontal", command=tree_resumo.xview)
+tree_resumo.configure(yscrollcommand=scroll_y_r.set, xscrollcommand=scroll_x_r.set)
+
+scroll_y_r.pack(side="right", fill="y")
+scroll_x_r.pack(side="bottom", fill="x")
 tree_resumo.pack(fill="both", expand=True)
 
 frame_rel = tk.LabelFrame(right, text="Relatório (PDF)")
